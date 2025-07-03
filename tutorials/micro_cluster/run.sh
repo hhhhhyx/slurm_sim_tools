@@ -7,7 +7,7 @@ export RUN_NAME="priority_saf"
 export dtstart=79
 export replica=1
 
-slurmsim -v run_sim  -d \
+/opt/slurm_sim_tools/bin/slurmsim -v run_sim  -d \
             -e ${CLUS_DIR}/etc \
             -a ${CLUS_DIR}/etc/sacctmgr.script \
             -w ${CLUS_DIR}/workload/jobs500.events \

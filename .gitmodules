@@ -1,0 +1,3 @@
+[submodule "slurm_simulator"]
+	path = slurm_simulator
+	url = https://github.com/hhhhhyx/slurm_simulator.git

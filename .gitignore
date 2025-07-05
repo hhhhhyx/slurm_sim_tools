@@ -19,3 +19,6 @@ __pycache__
 /tutorials/micro_cluster/var
 /tutorials/micro_cluster/log
 /tutorials/micro_cluster/results
+Makefile
+Makefile.am
+Makefile.in

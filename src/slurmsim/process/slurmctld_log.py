@@ -292,18 +292,27 @@ class ProcessSlurmCtrdLog:
                 m_job_id = None
                 m_job_rec_id = None
                 m_priority = None
+                m_emissions_start = None
                 for i in range(1,window_size):
                     if m_job_name is None and re.search("JobDesc: user_id=", window[i]):
                         # logpe3
                         m = re.search("JobDesc: user_id=\S* JobId=\S* partition=\S* name=(\S*)", window[i])
                         m_job_name = m.group(1)
 
+                    if m_emissions_start is None and re.search("Job submit emissions for job", window[i]):
+                        m = re.search("Job submit emissions for job (\S+) is ([\d.]+)", window[i])
+                        if m:
+                            m_emissions_start = m.group(2)
+                        else:
+                            print("Failed to extract emissions from line:", window[i])
+
                     if m_job_id is None and re.search("initial priority for job \S* is ", window[i]):
                         # logpe2
                         m = re.search("initial priority for job (\S+) is (\d+)", window[i])
                         m_job_id = m.group(1)
                         m_priority = m.group(2)
-                    if m_job_name is not None and m_job_id is not None:
+                    if m_job_name is not None and m_job_id is not None and m_emissions_start is not None:
+                    # if m_job_name is not None and m_job_id is not None:
                         break
 
                 if m_job_name is not None:
@@ -319,7 +328,7 @@ class ProcessSlurmCtrdLog:
                                 print("Error: job id dont match %s != %s" % (
                                 m_job_id, m_job_rec_id))
                         else:
-                            print("Error: didn't find job id, set it from job name (%s). Please check the match by other means" % (m_job_name__m_job_id))
+                            print("Error: in logs didn't find job id, set it from job name (%s). Please check the match by other means" % (m_job_name__m_job_id))
                             m_job_id = m_job_name__m_job_id
 
                     if m_job_rec_id is None:
@@ -338,6 +347,8 @@ class ProcessSlurmCtrdLog:
                     print("Error: something is wrong can identify job_name or m_job_id on line %d" % line_number)
                 if m_priority:
                     self.add_record(m_job_id, "initial_priority", m_t, m_priority)
+                if m_emissions_start: 
+                     self.add_record(m_job_id, "carbon_emissions", m_t, m_emissions_start)
             # sched_info
             m = re.search("sched: Allocate JobId=(\S+) NodeList=(\S+)", window[0])
             if m:

@@ -348,7 +348,7 @@ class ProcessSlurmCtrdLog:
                 if m_priority:
                     self.add_record(m_job_id, "initial_priority", m_t, m_priority)
                 if m_emissions_start: 
-                     self.add_record(m_job_id, "carbon_emissions", m_t, m_emissions_start)
+                    self.add_record(m_job_id, "carbon_emissions", m_t, m_emissions_start)
             # sched_info
             m = re.search("sched: Allocate JobId=(\S+) NodeList=(\S+)", window[0])
             if m:
@@ -367,6 +367,17 @@ class ProcessSlurmCtrdLog:
                 m_nodes = m.group(2)
                 self.add_record(m_job_id, "launch_job", m_t, "backfill")
                 self.add_record(m_job_id, "nodes", m_t, m_nodes)
+
+            # [2025-07-21T14:38:09.701290] Job scheduler actual emissions for job jobid_1001 is 0.409150
+            m = re.search("Job scheduler actual emissions for job (\S+) is ([\d.]+)", window[0])
+            if m:
+                m_t, m_ts = get_datatime(window[0]) 
+                m_emissions_actual = m.group(2)
+                m_job_id = m.group(1).replace('jobid_','')
+                self.add_record(m_job_id, "carbon_emissions_actual", m_t, m_emissions_actual)
+                print(m_job_id)
+                print(m_emissions_actual)
+
             # [2022-02-02T13:51:06.147191] sched/backfill: _start_job: Started JobId=1001 in normal on n1
             # info in plugin
             m = re.search("sched/backfill: _start_job: Started JobId=(\S+) in \S+ on (\S+)", window[0])

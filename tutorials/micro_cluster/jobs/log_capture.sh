@@ -1,4 +1,5 @@
 #!/bin/bash
+#ignore this file, use capture.sh to capture jobs
 LOG_SRC="/home/slurm/work/micro_cluster/log/jobcomp.log"
 LOG_DEST_DIR="/home/slurm/work/micro_cluster/jobs"
 LAST_LINE_FILE="/tmp/jobcomp_last_line.txt"  

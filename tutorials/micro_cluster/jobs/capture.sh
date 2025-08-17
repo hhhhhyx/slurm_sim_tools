@@ -7,7 +7,9 @@ export TZ="GMT"
 mkdir -p "$LOG_DEST_DIR"
 
 
-TIMESTART=1753108515  
+TIMESTART=1721026800
+
+echo "go..."
 
 if [ ! -f "$LAST_LINE_FILE" ]; then
     echo "0" > "$LAST_LINE_FILE"
@@ -15,7 +17,7 @@ fi
 LAST_LINE=$(cat "$LAST_LINE_FILE")
 
 while true; do
-    sleep 5
+    sleep 60
 
 
     TIMESTART=$((TIMESTART + 5))

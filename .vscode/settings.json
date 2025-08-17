@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "json.h": "c",
+        "slurm.h": "c",
+        "cstdio": "cpp",
+        "sim_time.h": "c",
+        "slurmctld.h": "c",
+        "slurm_errno.h": "c",
+        "carbon_intensity.h": "c"
+    }
+}
